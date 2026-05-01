@@ -1,13 +1,31 @@
-FROM node:12-alpine
+FROM node:24-alpine AS builder
 
-WORKDIR /excalidraw-room
+RUN corepack enable
 
-COPY package.json yarn.lock ./
-RUN yarn
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY tsconfig.json ./
 COPY src ./src
-RUN yarn build
+RUN pnpm build
+
+# ---- Production image ----
+FROM node:24-alpine
+
+RUN corepack enable && \
+    addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prod
+
+COPY --from=builder /app/dist ./dist
+COPY public ./public
+
+USER appuser
 
 EXPOSE 80
-CMD ["yarn", "start"]
+CMD ["node", "dist/index.js"]

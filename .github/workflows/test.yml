@@ -2,19 +2,21 @@ name: Test & Build
 
 on:
   push:
+  pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Setup Node.js 14.x
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: 14.x
+          node-version: 20
+          cache: pnpm
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Test and Build
         run: |
-          yarn test:code
-          yarn build
+          pnpm test:code
+          pnpm build

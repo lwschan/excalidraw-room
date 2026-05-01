@@ -1,14 +1,21 @@
 {
   "name": "excalidraw-collab-dev",
   "script": "./dist/index.js",
-  "watch": ["src/"],
-  "ignore_watch": ["node_modules", "public"],
+  "watch": [
+    "src/"
+  ],
+  "ignore_watch": [
+    "node_modules",
+    "public"
+  ],
   "autorestart": false,
   "exec_mode": "fork_mode",
   "instances": 1,
   "env": {
     "NODE_ENV": "development",
-    "TZ": "Europe/London"
+    "TZ": "Etc/UTC"
   },
-  "node_args": ["--inspect=127.0.0.1:9320"]
+  "node_args": [
+    "--inspect=127.0.0.1:9320"
+  ]
 }
