@@ -25,7 +25,7 @@ jobs:
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
       - name: Create GitHub Release
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           TAG="v${{ steps.version.outputs.version }}"
           if gh release view "$TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
