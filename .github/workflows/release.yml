@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: master
+          ref: main
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
@@ -38,7 +38,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr create \
-            --base master \
+            --base main \
             --head release/v${{ inputs.version }} \
             --title "Release v${{ inputs.version }}" \
             --body "Bumps \`package.json\` version to \`${{ inputs.version }}\`. Merging this PR will automatically create the GitHub Release and trigger the Docker publish."
