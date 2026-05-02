@@ -1,0 +1,44 @@
+name: Create Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g. 2.1.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Create release branch
+        run: git checkout -b release/v${{ inputs.version }}
+      - name: Bump package.json version
+        run: npm version ${{ inputs.version }} --no-git-tag-version
+      - name: Commit version bump
+        run: |
+          git add package.json
+          git commit -m "chore: bump version to ${{ inputs.version }}"
+      - name: Push branch
+        run: git push origin release/v${{ inputs.version }}
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base master \
+            --head release/v${{ inputs.version }} \
+            --title "Release v${{ inputs.version }}" \
+            --body "Bumps \`package.json\` version to \`${{ inputs.version }}\`. Merging this PR will automatically create the GitHub Release and trigger the Docker publish."
