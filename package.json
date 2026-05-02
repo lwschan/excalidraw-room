@@ -38,6 +38,6 @@
     "test:other": "pnpm prettier --list-different",
     "test": "pnpm test:other && pnpm test:code"
   },
-  "version": "2.0.2",
+  "version": "2.0.3",
   "packageManager": "pnpm@11.0.3"
 }
