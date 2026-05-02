@@ -30,7 +30,7 @@
     "fix:code": "pnpm test:code --fix",
     "fix:other": "pnpm prettier --write",
     "fix": "pnpm fix:other && pnpm fix:code",
-    "prettier": "prettier . --ignore-path=.gitignore",
+    "prettier": "prettier src --ignore-path=.gitignore",
     "start": "node dist/index.js",
     "start:dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/index.ts",
     "test:code": "eslint --ext .ts .",
